@@ -40,7 +40,7 @@ jobs:
           context: .
           push: true
           build-args: |
-            MB_EDITION=oss
+            MB_EDITION=ee
             VERSION=v0.0.0-${{ github.sha }}
           tags: |
             ghcr.io/${{ github.repository }}:latest
