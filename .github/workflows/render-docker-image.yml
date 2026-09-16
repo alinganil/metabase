@@ -34,6 +34,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # rspack.config.js unconditionally builds the embedding-sdk bundle, which shells out to
+      # `git rev-parse` for build metadata. .dockerignore excludes .git from the build context,
+      # so BuildKit (unlike Render's builder) fails that step outright. .git only exists in the
+      # multi-stage builder layer, never the final runner image, so re-including it here is safe.
+      - name: Allow .git in Docker build context
+        run: echo '!.git' >> .dockerignore
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
